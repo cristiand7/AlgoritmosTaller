@@ -198,7 +198,7 @@ public abstract class Grafo implements GrafoI {
 
                 cadena = buffer.readLine();
                 while (!(cadena = buffer.readLine()).equals("ARCOS")) {
-                    addNodo(new Nodo(cadena));
+                    nuevoVertice(cadena);
                 }
                 while (!(cadena = buffer.readLine()).equals("COMIENZA")) {
                     String[] result = cadena.split(",");
@@ -207,7 +207,7 @@ public abstract class Grafo implements GrafoI {
                 cadena = buffer.readLine();
                 int num=numVertice(cadena);        
                 Nodo n=buscarNodo(num);
-                dijkstraGeneral();
+                dijkstraGeneral(n);
 
                 buffer.close();
         }
@@ -223,9 +223,9 @@ public abstract class Grafo implements GrafoI {
 			Nodo NodoActual = getMenorDistanciaNodoG(nodosNoAgregados);
 			nodosNoAgregados.remove(NodoActual);
 			for (Nodo conexionActual : NodoActual.getNodos()) {
-				Double conexionPeso = Double.parseDouble((String) conexionActual.getObjeto());
+				int conexionPeso = (int)conexionActual.getObjeto();
 				if (!nodosAgregados.contains(conexionActual)) {
-					MinimaDistanciaG(conexionActual, conexionPeso, NodoActual);
+					MinimaDistanciaG(conexionActual,(double) conexionPeso, NodoActual);
 					if (!nodosNoAgregados.contains(conexionActual)) {
 						nodosNoAgregados.add(conexionActual);
 					}
