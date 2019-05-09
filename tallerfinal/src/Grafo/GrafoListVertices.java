@@ -33,10 +33,13 @@ public class GrafoListVertices extends Grafo {
 
     @Override
     public int numVertice(String nombre) {
+        int i =0;
         for (Nodo nodo : nodos) {
+            
             if (nodo.getNombre().equals(nombre)) {
-                return nodo.getNodos().size();
+                return i;
             }
+            i++;
         }
         return 0;
     }

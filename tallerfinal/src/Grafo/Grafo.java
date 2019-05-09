@@ -54,7 +54,11 @@ public abstract class Grafo implements GrafoI {
         // TODO Auto-generated method stub
         return super.toString();
     }
-
+    
+    /**
+     * Algoritmo Floy Warshall
+     * @throws IOException 
+     */
     public void floydWarshallGeneral() throws IOException {
         int n;
 
@@ -145,6 +149,15 @@ public abstract class Grafo implements GrafoI {
 
     }
 
+    
+   
+    /**
+     * Algoritmo BFS (anchura) 
+     * 
+     * @param s
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     public void BFS(int s) throws FileNotFoundException, IOException {
         ReadGraphFromFIle("anchura.txt");
         boolean visitados[] = new boolean[4];
@@ -164,4 +177,89 @@ public abstract class Grafo implements GrafoI {
             }
         }
     }
+    
+    
+    
+    	
+	/**
+	 * Algoritmo de dijkstra
+	 * 
+	 * @param graph
+	 * @param inicial
+	 * @return
+	 */
+    
+         
+    
+	public  void dijkstraGeneral() throws IOException {
+                String cadena;
+                FileReader file = new FileReader("dijkstra.txt");
+                BufferedReader buffer = new BufferedReader(file);
+
+                cadena = buffer.readLine();
+                while (!(cadena = buffer.readLine()).equals("ARCOS")) {
+                    addNodo(new Nodo(cadena));
+                }
+                while (!(cadena = buffer.readLine()).equals("COMIENZA")) {
+                    String[] result = cadena.split(",");
+                     nuevoArco(result[0], result[1], Integer.parseInt(result[2]));
+                }
+                cadena = buffer.readLine();
+                int num=numVertice(cadena);        
+                Nodo n=buscarNodo(num);
+                dijkstraGeneral();
+
+                buffer.close();
+        }
+        private  void dijkstraGeneral( Nodo inicial) {
+		inicial.setDistancia(0);
+
+		List<Nodo> nodosAgregados = new ArrayList<>();
+		List<Nodo> nodosNoAgregados = new ArrayList<>();
+
+		nodosNoAgregados.add(inicial);
+
+		while (nodosNoAgregados.size() != 0) {
+			Nodo NodoActual = getMenorDistanciaNodoG(nodosNoAgregados);
+			nodosNoAgregados.remove(NodoActual);
+			for (Nodo conexionActual : NodoActual.getNodos()) {
+				Double conexionPeso = Double.parseDouble((String) conexionActual.getObjeto());
+				if (!nodosAgregados.contains(conexionActual)) {
+					MinimaDistanciaG(conexionActual, conexionPeso, NodoActual);
+					if (!nodosNoAgregados.contains(conexionActual)) {
+						nodosNoAgregados.add(conexionActual);
+					}
+				}
+			}
+			nodosAgregados.add(NodoActual);
+			System.out.println("Nombre " + NodoActual.getNombre());
+		}
+		
+	}
+
+	private  Nodo getMenorDistanciaNodoG(List<Nodo> nodosNoAgregados) {
+		Nodo menorDistanciaNodo = null;
+		Double menorDistancia = Double.MAX_VALUE;
+		for (Nodo nodo : nodosNoAgregados) {
+			Double distanciaNodo = nodo.getDistancia();
+			if (distanciaNodo < menorDistancia) {
+				menorDistancia = distanciaNodo;
+				menorDistanciaNodo = nodo;
+			}
+		}
+		return menorDistanciaNodo;
+	}
+
+	private  void MinimaDistanciaG(Nodo nodoEvaluar, Double peso, Nodo nodoActual) {
+		Double nodoActualDistancia = nodoActual.getDistancia();
+		if (nodoActualDistancia + peso < nodoEvaluar.getDistancia()) {
+			nodoEvaluar.setDistancia(nodoActualDistancia + peso);
+			List<Nodo> menorDistancia = nodoActual.getMenorDistancia();
+			menorDistancia.add(nodoActual);
+			nodoEvaluar.setMenorDistancia(menorDistancia);
+		}
+	}
+
+ 
+    
 }

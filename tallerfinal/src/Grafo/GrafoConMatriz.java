@@ -477,9 +477,7 @@ public class GrafoConMatriz extends Grafo {
          for (int x=0; x < V; x++) {
             System.out.println("AL NODO "+ x + " : "+ distancia[x]);
          }
-         System.out.println();
-
-        
+         System.out.println();        
     }
     
 public void restricciones() throws IOException {

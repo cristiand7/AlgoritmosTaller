@@ -65,7 +65,9 @@ public class main {
                 grafoConMatriz = grafoConMatriz.dijkstra(grafoConMatriz, grafoConMatriz.obtenerNodo(cadena = buffer.readLine(), grafoConMatriz));
 
                 buffer.close();
-
+                System.out.println("DIJSTRA GENERAL --------");
+                
+               new GrafoListVertices().dijkstraGeneral();
             }
             if (algoritmo.trim().equals("2")) {
                 String cadena;
