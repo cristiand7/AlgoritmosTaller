@@ -57,11 +57,11 @@ public class GrafoListAristas extends Grafo {
 
         for (int i = 0; i < aristas.size(); i++) {
             if (aristas.get(i).getVertice1().equals(a)) {
-                if (aristas.get(i).getVertice2().equals( b)) {
-                    costo=  aristas.get(i).getCosto();
+                if (aristas.get(i).getVertice2().equals(b)) {
+                    costo = aristas.get(i).getCosto();
                     return costo;
                 }
-                
+
             }
         }
         return 65535;

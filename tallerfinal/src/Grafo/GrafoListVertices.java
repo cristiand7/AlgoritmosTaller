@@ -26,16 +26,16 @@ public class GrafoListVertices extends Grafo {
     @Override
     public void nuevoVertice(String nombre) {
         // TODO Auto-generated method stub
-        Nodo n =new Nodo(nombre);
+        Nodo n = new Nodo(nombre);
         n.setNumeroNodo(nodos.size());
-       addNodo(n);
+        addNodo(n);
     }
 
     @Override
     public int numVertice(String nombre) {
-        int i =0;
+        int i = 0;
         for (Nodo nodo : nodos) {
-            
+
             if (nodo.getNombre().equals(nombre)) {
                 return i;
             }

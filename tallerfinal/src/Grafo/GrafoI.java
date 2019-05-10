@@ -1,5 +1,6 @@
 package Grafo;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface GrafoI {
@@ -14,5 +15,9 @@ public interface GrafoI {
 	public void setNodos(List<Nodo> nodos);
 	public int getNumeroNodos() ;
 	public void setNumeroNodos(int numeroNodos);
-
+       public void dijkstra() throws IOException;
+       public void floydWarshall() throws IOException ;
+       public void BFS(int s) throws  IOException ;
+       public void prim() throws IOException ;
+       public void recorridoGrafoProfundidad(Nodo v, List<Nodo> nueva) ;
 }
