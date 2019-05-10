@@ -141,6 +141,84 @@ public class GrafoConMatriz extends Grafo {
  
 
     /**
+     * algotimo de dijkstra con cola de prioridad 
+     * @throws IOException 
+     */
+    public void colaPrioridad() throws IOException {
+        int n;
+
+        String cadena;
+        FileReader file = new FileReader("colaPrioridad.txt");
+        BufferedReader buffer = new BufferedReader(file);
+
+        cadena = buffer.readLine();
+
+        n = Integer.parseInt(cadena);
+
+        GrafoConMatriz gra = new GrafoConMatriz(n);
+        cadena = buffer.readLine();
+
+        while (!(cadena = buffer.readLine()).equals("ARCOS")) {
+            gra.nuevoVertice(cadena.trim());
+        }
+        while ((cadena = buffer.readLine()) != null) {
+            String[] result = cadena.split(",");
+            gra.nuevoArco(result[0], result[1], Integer.parseInt(result[2]));
+        }
+        buffer.close();
+
+        System.out.println("Cola de prioridad usado en Dijkstra: ");
+
+        for (int nodo = 0; nodo < n; nodo++) {
+            colaPrioridadDijkstra(gra, n, nodo);
+        }
+
+    }
+    
+    public void colaPrioridadDijkstra(GrafoConMatriz gra, int V, int inicio) {
+        int[] distancia = new int[V];
+        int[] padre = new int[V];
+        boolean[] visto = new boolean[V];
+
+        for (int i = 0; i < V; i++) {
+            distancia[i] = 1200000000;
+            padre[i] = -1;
+            visto[i] = false;
+        }
+
+        distancia[inicio] = 0;
+        PriorityQueue<Integer> pila = new PriorityQueue<>();
+        pila.clear();
+        pila.add(inicio);
+
+        while (!pila.isEmpty()) {
+
+            int u = pila.poll();
+            visto[u] = true;
+
+            for (int i = 0; i < V; i++) {
+
+                if (gra.getMatrizPeso()[u][i] != 0) {
+
+                    if (distancia[i] > distancia[u] + gra.getMatrizPeso()[u][i]) {
+
+                        distancia[i] = distancia[u] + gra.getMatrizPeso()[u][i];
+                        padre[i] = u;
+
+                        pila.add(i);
+                    }
+                }
+            }
+        }
+        System.out.println("DESDE EL NODO : " + inicio);
+        for (int x = 0; x < V; x++) {
+            System.out.println("AL NODO " + x + " : " + distancia[x]);
+        }
+        System.out.println();
+    }
+
+  
+    /**
      * Algoritmo de dijkstra
      *
      * @param graph
@@ -196,81 +274,6 @@ public class GrafoConMatriz extends Grafo {
         }
     }
 
-
-    public void colaPrioridad() throws IOException {
-        int n;
-
-        String cadena;
-        FileReader file = new FileReader("colaPrioridad.txt");
-        BufferedReader buffer = new BufferedReader(file);
-
-        cadena = buffer.readLine();
-
-        n = Integer.parseInt(cadena);
-
-        GrafoConMatriz gra = new GrafoConMatriz(n);
-        cadena = buffer.readLine();
-
-        while (!(cadena = buffer.readLine()).equals("ARCOS")) {
-            gra.nuevoVertice(cadena.trim());
-        }
-        while ((cadena = buffer.readLine()) != null) {
-            String[] result = cadena.split(",");
-            gra.nuevoArco(result[0], result[1], Integer.parseInt(result[2]));
-        }
-        buffer.close();
-
-        System.out.println("Cola de prioridad usado en Dijkstra: ");
-
-        for (int nodo = 0; nodo < n; nodo++) {
-            colaPrioridadDijkstra(gra, n, nodo);
-        }
-
-    }
-
-    public void colaPrioridadDijkstra(GrafoConMatriz gra, int V, int inicio) {
-        int[] distancia = new int[V];
-        int[] padre = new int[V];
-        boolean[] visto = new boolean[V];
-
-        for (int i = 0; i < V; i++) {
-            distancia[i] = 1200000000;
-            padre[i] = -1;
-            visto[i] = false;
-        }
-
-        distancia[inicio] = 0;
-        PriorityQueue<Integer> pila = new PriorityQueue<>();
-        pila.clear();
-        pila.add(inicio);
-
-        while (!pila.isEmpty()) {
-
-            int u = pila.poll();
-            visto[u] = true;
-
-            for (int i = 0; i < V; i++) {
-
-                if (gra.getMatrizPeso()[u][i] != 0) {
-
-                    if (distancia[i] > distancia[u] + gra.getMatrizPeso()[u][i]) {
-
-                        distancia[i] = distancia[u] + gra.getMatrizPeso()[u][i];
-                        padre[i] = u;
-
-                        pila.add(i);
-                    }
-                }
-            }
-        }
-        System.out.println("DESDE EL NODO : " + inicio);
-        for (int x = 0; x < V; x++) {
-            System.out.println("AL NODO " + x + " : " + distancia[x]);
-        }
-        System.out.println();
-    }
-
-  
 }
 
 
