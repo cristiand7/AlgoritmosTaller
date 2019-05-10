@@ -6,6 +6,7 @@ import java.util.List;
 public interface GrafoI {
 
 	public Nodo buscarNodo(int a);
+	public Nodo buscarNodo(String a);
 	public void addNodo(Nodo nodoA) ;
 	public void nuevoVertice(String nombre);
 	public int numVertice(String nombre) ;

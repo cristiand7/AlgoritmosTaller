@@ -43,6 +43,15 @@ public class GrafoConMatriz extends Grafo {
         }
         return null;
     }
+     public Nodo buscarNodo(String a) {
+        for (Nodo nodo : nodos) {
+            if (nodo.getNombre().equals(a)) {
+
+                return nodo;
+            }
+        }
+        return null;
+    }
 
     public GrafoConMatriz() {
         int max = 30;

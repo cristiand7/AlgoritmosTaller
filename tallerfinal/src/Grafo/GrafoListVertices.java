@@ -8,6 +8,16 @@ public class GrafoListVertices extends Grafo {
     List<Nodo> nodos = new ArrayList<>();
 
     @Override
+     public Nodo buscarNodo(String a) {
+        for (Nodo nodo : nodos) {
+            if (nodo.getNombre().equals(a)) {
+
+                return nodo;
+            }
+        }
+        return null;
+    }
+    @Override
     public Nodo buscarNodo(int a) {
         for (Nodo nodo : nodos) {
             if (nodo.getNumeroNodo() == a) {

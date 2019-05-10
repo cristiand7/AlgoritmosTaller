@@ -41,6 +41,7 @@ public class main {
             System.out.println("7. Warshall");
             System.out.println("8. Problema Burro-Paja-Lobo");
             System.out.println("9. Cambio de moneda");
+            System.out.println("10. Kruskal");
 
             System.out.println("0. Salir");
             System.out.println();
@@ -161,6 +162,9 @@ public class main {
                  dijkstraCambioDeMoneda(grafoConMatriz, grafoConMatriz.obtenerNodo(cadena = buffer.readLine(), grafoConMatriz));
 
                  buffer.close();
+            }
+            if (algoritmo.trim().equals("10")) {
+                new GrafoListAristas().Kruskal();
             }
 
             System.out.println();

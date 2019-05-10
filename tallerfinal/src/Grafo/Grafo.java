@@ -139,7 +139,7 @@ public abstract class Grafo implements GrafoI {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public void BFS(int s) throws  IOException {
+    public void BFS(int s) throws IOException {
         ReadGraphFromFIle("anchura.txt");
         boolean visitados[] = new boolean[4];
         LinkedList<Integer> cola = new LinkedList<Integer>();
@@ -217,7 +217,7 @@ public abstract class Grafo implements GrafoI {
             Nodo NodoActual = getMenorDistanciaNodoG(nodosNoAgregados);
             nodosNoAgregados.remove(NodoActual);
             for (Nodo conexionActual : NodoActual.getNodos()) {
-                Double conexionPeso = Double.parseDouble(conexionActual.getObjeto()+"");
+                Double conexionPeso = Double.parseDouble(conexionActual.getObjeto() + "");
                 if (!nodosAgregados.contains(conexionActual)) {
                     MinimaDistanciaG(conexionActual, conexionPeso, NodoActual);
                     if (!nodosNoAgregados.contains(conexionActual)) {
@@ -255,7 +255,8 @@ public abstract class Grafo implements GrafoI {
 
     /**
      * Algoritmo de prim
-     * @throws IOException 
+     *
+     * @throws IOException
      */
     public void prim() throws IOException {
         int n;
@@ -323,7 +324,7 @@ public abstract class Grafo implements GrafoI {
             coste[z] = GrafoConMatriz.INFINITO;
 
             for (int j = 1; j < getNumeroNodos(); j++) {
-                  Nodo a = buscarNodo(z);
+                Nodo a = buscarNodo(z);
                 Nodo b = buscarNodo(j);
                 int peso = pesoArco(a.getNombre(), b.getNombre());
                 if ((peso < coste[j]) && !W[j]) {
@@ -335,8 +336,6 @@ public abstract class Grafo implements GrafoI {
         return longMin;
     }
 
-    
-    
     /**
      * Recorrido grado en profundidad
      *
@@ -354,4 +353,6 @@ public abstract class Grafo implements GrafoI {
             }
         }
     }
+
+  
 }
