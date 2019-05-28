@@ -8,6 +8,9 @@ package main.java;
 import co.edu.javeriana.algoritmos.proyecto.ColorJugador;
 import co.edu.javeriana.algoritmos.proyecto.Jugada;
 import co.edu.javeriana.algoritmos.proyecto.Tablero;
+import java.util.ArrayList;
+import java.util.List;
+import java.awt.Point;
 
 /**
  *
@@ -16,16 +19,25 @@ import co.edu.javeriana.algoritmos.proyecto.Tablero;
 public class TableroHex implements Tablero {
 
     ColorJugador tablero[][];
-
+    
+    List<Point> Libres;
+    List<Point> Blancas;
+    List<Point> Negras;
+    
     public TableroHex() {
+        Libres = new ArrayList<>();
+        Blancas = new ArrayList<>();
+        Negras = new ArrayList<>();
+        
         int n = 11;
         tablero = new ColorJugador[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 tablero[i][j] = null;
+                Libres.add(new Point(i,j));
             }
         }
-
+        
     }
 
     @Override
@@ -47,10 +59,39 @@ public class TableroHex implements Tablero {
         return tablero[fila][columna];
     }
     
-    public void setCasilla(int fila, int columna,ColorJugador color) {
-        tablero[fila][columna]=color;
+    public void Actualizar(Tablero t){
+        double s=System.nanoTime();
+        int n =11;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if(t.casilla(i, j)!=null)
+                {
+                    if(tablero[i][j]==null){
+                        Libres.remove(new Point(i,j));
+                        if(t.casilla(i, j)==ColorJugador.BLANCO)
+                            Blancas.add(new Point(i,j));
+                        else
+                            Negras.add(new Point(i,j));
+                   } 
+                }
+                tablero[i][j] = t.casilla(i, j);
+            }
+        }
+        double e=System.nanoTime();
+        System.out.println("T: "+(e-s)/1000000);
     }
 
+    public List<Point> getLibres() {
+        return Libres;
+    }
+
+    public List<Point> getBlancas() {
+        return Blancas;
+    }
+
+    public List<Point> getNegras() {
+        return Negras;
+    }
     
     /**
      * imprimesion del tablero para ver movimientos

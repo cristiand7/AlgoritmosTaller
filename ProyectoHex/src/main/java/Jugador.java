@@ -9,6 +9,7 @@ import co.edu.javeriana.algoritmos.proyecto.ColorJugador;
 import co.edu.javeriana.algoritmos.proyecto.Jugada;
 import co.edu.javeriana.algoritmos.proyecto.JugadorHex;
 import co.edu.javeriana.algoritmos.proyecto.Tablero;
+import java.awt.Point;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -24,14 +25,31 @@ public class Jugador implements JugadorHex{
     public final long MAX_CALCULATION_TIME = 1000*2-1;
     public final TimeUnit MAX_CALCULATION_UNITS = TimeUnit.MILLISECONDS;
     
-    private Jugada mejorJugada = null;
+    private Jugada mejorJugada;
+    private final TableroHex tableroInterno;
+    
+    public Jugador(){
+        mejorJugada = null;
+        tableroInterno = new TableroHex();
+    }
+    
+    public Jugada newJugada(Point p){
+        return new Jugada(p.x, p.y);
+    }
 
     public Jugada encontrarMejorJugada(Tablero tablero, ColorJugador color) throws InterruptedException {
-        mejorJugada = new Jugada(1, 1);
+        //Actualizar lista de casillas libres
+        tableroInterno.Actualizar(tablero);
+        //Escoger la unica casilla libra por si acaso
+        mejorJugada = newJugada(tableroInterno.Libres.get(0));
+   
+        //Algoritmo que escoge la mejor casilla para hacer movimiento
         Thread.sleep(3000);
-        mejorJugada = new Jugada(2, 2);
+        mejorJugada = newJugada(tableroInterno.Libres.get(1));
+        
         return mejorJugada;
     }
+    
     @Override
     public Jugada jugar(Tablero tablero, ColorJugador color) {
         final ExecutorService service = Executors.newSingleThreadExecutor();
