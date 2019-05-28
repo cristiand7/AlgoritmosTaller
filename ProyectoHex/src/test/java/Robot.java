@@ -19,9 +19,10 @@ import main.java.TableroHex;
  */
 public class Robot {
 
-    
-    
-    public static void main(String args[]) {
+    public static void main(String args[]) {        
+        JugadorHex jugador = new Jugador();
+        System.out.println(jugador.jugar(null, null));
+        
         System.out.println("Test hex");
         boolean turno = false;
         int aleatorio = (int) (Math.random() * 100) + 1;

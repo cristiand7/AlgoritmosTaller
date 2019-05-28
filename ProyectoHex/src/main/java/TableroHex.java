@@ -68,6 +68,9 @@ public class TableroHex implements Tablero {
         System.out.println("  | _______________________");
         System.out.println("  | A B C D E F G H I J K    ");
         for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                System.out.print(" ");
+            }
             for (int j = 0; j < n; j++) {
                 if (j==0){
                     String v=(i>=9) ? "" : " ";
