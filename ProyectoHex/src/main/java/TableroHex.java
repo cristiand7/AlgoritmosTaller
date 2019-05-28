@@ -15,14 +15,14 @@ import co.edu.javeriana.algoritmos.proyecto.Tablero;
  */
 public class TableroHex implements Tablero {
 
-    int tablero[][];
+    ColorJugador tablero[][];
 
     public TableroHex() {
         int n = 11;
-        tablero = new int[n][n];
+        tablero = new ColorJugador[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                tablero[i][j] = -1;
+                tablero[i][j] = null;
             }
         }
 
@@ -32,7 +32,7 @@ public class TableroHex implements Tablero {
     public void aplicarJugada(Jugada jugada, ColorJugador colorJugador) {
         int columna = jugada.getColumna();
         int fila = jugada.getFila();
-        tablero[columna][fila] = (colorJugador == ColorJugador.NEGRO) ? 0 : 1;
+        tablero[columna][fila] = colorJugador;
 
         imprimirTablero();
     }
@@ -44,14 +44,11 @@ public class TableroHex implements Tablero {
 
     @Override
     public ColorJugador casilla(int fila, int columna) {
-        
-        if (tablero[fila][columna] == 0) {
-            return ColorJugador.BLANCO;
-        }
-        if (tablero[fila][columna] == 1) {
-            return ColorJugador.BLANCO;
-        }
-        return null;
+        return tablero[fila][columna];
+    }
+    
+    public void setCasilla(int fila, int columna,ColorJugador color) {
+        tablero[fila][columna]=color;
     }
 
     
@@ -76,13 +73,13 @@ public class TableroHex implements Tablero {
                     String v=(i>=9) ? "" : " ";
                     System.out.print((i+1)+ v+"|");
                 }
-                if (tablero[i][j] == -1) {
+                if (tablero[i][j] == null) {
                     System.out.print(" -");
                 }
-                if (tablero[i][j] == 0) {
+                if (tablero[i][j] == ColorJugador.NEGRO) {
                     System.out.print(" O");
                 }
-                if (tablero[i][j] == 1) {
+                if (tablero[i][j] == ColorJugador.BLANCO) {
                     System.out.print(" X");
                 }
             }
