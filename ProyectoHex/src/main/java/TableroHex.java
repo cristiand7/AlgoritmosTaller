@@ -11,26 +11,31 @@ import co.edu.javeriana.algoritmos.proyecto.Tablero;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Point;
+import java.util.Iterator;
 
 /**
  *
  * @author USUARIO
  */
 public class TableroHex implements Tablero {
-
     ColorJugador tablero[][];
     
     List<Point> Libres;
     List<Point> Blancas;
     List<Point> Negras;
     
+    int turno;
+    
     public TableroHex() {
+        int n = 11;
+        tablero = new ColorJugador[n][n];
+        
         Libres = new ArrayList<>();
         Blancas = new ArrayList<>();
         Negras = new ArrayList<>();
         
-        int n = 11;
-        tablero = new ColorJugador[n][n];
+        turno = 1;
+
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 tablero[i][j] = null;
@@ -39,16 +44,6 @@ public class TableroHex implements Tablero {
         }
         
     }
-
-    @Override
-    public void aplicarJugada(Jugada jugada, ColorJugador colorJugador) {
-        int columna = jugada.getColumna();
-        int fila = jugada.getFila();
-        tablero[columna][fila] = colorJugador;
-
-        imprimirTablero();
-    }
-
     @Override
     public ColorJugador ganador() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -59,28 +54,24 @@ public class TableroHex implements Tablero {
         return tablero[fila][columna];
     }
     
-    public void Actualizar(Tablero t){
-        double s=System.nanoTime();
-        int n =11;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if(t.casilla(i, j)!=null)
-                {
-                    if(tablero[i][j]==null){
-                        Libres.remove(new Point(i,j));
-                        if(t.casilla(i, j)==ColorJugador.BLANCO)
-                            Blancas.add(new Point(i,j));
-                        else
-                            Negras.add(new Point(i,j));
-                   } 
-                }
-                tablero[i][j] = t.casilla(i, j);
-            }
-        }
-        double e=System.nanoTime();
-        System.out.println("T: "+(e-s)/1000000);
+    @Override
+    public void aplicarJugada(Jugada jugada, ColorJugador colorJugador) {
+        int columna = jugada.getColumna();
+        int fila = jugada.getFila();
+        
+        aplicarJugada(new Point(fila, columna), colorJugador);
+        Libres.remove(new Point(fila,columna));
+        imprimirTablero();
     }
-
+    
+    public ColorJugador casilla(Point p) {
+        return tablero[p.x][p.y];
+    }
+    
+    public void setCasilla(Point p, ColorJugador color) {
+        tablero[p.x][p.y] = color;
+    }
+    
     public List<Point> getLibres() {
         return Libres;
     }
@@ -91,6 +82,32 @@ public class TableroHex implements Tablero {
 
     public List<Point> getNegras() {
         return Negras;
+    }
+    public void Actualizar(Tablero t){
+        for (Iterator<Point> iterator = Libres.iterator(); iterator.hasNext(); ) {
+            Point p = iterator.next();
+            
+            if(t.casilla(p.x,p.y)!=null)
+            {
+                aplicarJugada(p, t.casilla(p.x,p.y),iterator);
+                turno++;
+                break;
+            }
+        }
+    }
+    
+    private void aplicarJugada(Point p, ColorJugador colorJugador) {
+        setCasilla(p, colorJugador);
+        ((colorJugador==ColorJugador.BLANCO)?Blancas:Negras).add(p);   
+    }
+    private void aplicarJugada(Point p, ColorJugador colorJugador, Iterator<Point> iterator) {
+        aplicarJugada(p, colorJugador);
+        iterator.remove();
+    }    
+    public void tiempo(){
+        double s=System.nanoTime();
+        double e=System.nanoTime();
+        System.out.println("T: "+(e-s)/1000000);
     }
     
     /**

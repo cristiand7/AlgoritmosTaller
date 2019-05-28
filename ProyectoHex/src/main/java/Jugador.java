@@ -40,13 +40,15 @@ public class Jugador implements JugadorHex{
     public Jugada encontrarMejorJugada(Tablero tablero, ColorJugador color) throws InterruptedException {
         //Actualizar lista de casillas libres
         tableroInterno.Actualizar(tablero);
-        //Escoger la unica casilla libra por si acaso
+        
+        //Escoger la unica casilla libre por si acaso
         mejorJugada = newJugada(tableroInterno.Libres.get(0));
-   
-        //Algoritmo que escoge la mejor casilla para hacer movimiento
+        
+        //TODO: Algoritmo que escoge la mejor casilla para hacer movimiento
         Thread.sleep(3000);
         mejorJugada = newJugada(tableroInterno.Libres.get(1));
         
+        tableroInterno.aplicarJugada(mejorJugada, color); 
         return mejorJugada;
     }
     
