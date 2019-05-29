@@ -20,15 +20,22 @@ import java.util.Iterator;
 public class TableroHex implements Tablero {
     ColorJugador tablero[][];
     
+    public int Pot[][][];
+    public int Bridge[][][];
+    public boolean Upd[][];
+    
     List<Point> Libres;
     List<Point> Blancas;
     List<Point> Negras;
     
+    public int Size = 11;
     int turno;
     
     public TableroHex() {
-        int n = 11;
-        tablero = new ColorJugador[n][n];
+        tablero = new ColorJugador[Size][Size];
+        Pot = new int[Size][Size][4];
+        Bridge = new int[Size][Size][4];
+        Upd = new boolean[Size][Size];
         
         Libres = new ArrayList<>();
         Blancas = new ArrayList<>();
@@ -36,9 +43,8 @@ public class TableroHex implements Tablero {
         
         turno = 1;
 
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                tablero[i][j] = null;
+        for (int i = 0; i < Size; i++) {
+            for (int j = 0; j < Size; j++) {
                 Libres.add(new Point(i,j));
             }
         }
@@ -61,6 +67,8 @@ public class TableroHex implements Tablero {
         
         aplicarJugada(new Point(fila, columna), colorJugador);
         Libres.remove(new Point(fila,columna));
+        
+        turno++;
         imprimirTablero();
     }
     
@@ -68,10 +76,42 @@ public class TableroHex implements Tablero {
         return tablero[p.x][p.y];
     }
     
+    private boolean OutOfBounds(int x, int y){
+	return x<0 || y<0 || x>=Size || y>=Size;
+    }
+    
+    public void SetUpd(int x,int y)
+    {
+        if (OutOfBounds(x,y))
+            return;
+        Upd[x][y]=true;
+    }
+    
+    public ColorJugador GetCell(int x,int y)
+    {
+        if (x<0)     return ColorJugador.NEGRO;
+        if (y<0)     return ColorJugador.BLANCO;
+        if (x>=Size) return ColorJugador.NEGRO;
+        if (y>=Size) return ColorJugador.BLANCO;
+        return tablero[x][y];
+    }
+    
     public void setCasilla(Point p, ColorJugador color) {
         tablero[p.x][p.y] = color;
     }
     
+    public int GetPot(int x,int y,int p, ColorJugador color)
+    {
+        if (OutOfBounds(x,y))
+            return 30000;
+
+        if (tablero[x][y]==null)
+            return Pot[x][y][p];
+        if (tablero[x][y]==color)
+            return Pot[x][y][p]-30000;
+        return 30000;
+    }
+
     public List<Point> getLibres() {
         return Libres;
     }
@@ -98,7 +138,7 @@ public class TableroHex implements Tablero {
     
     private void aplicarJugada(Point p, ColorJugador colorJugador) {
         setCasilla(p, colorJugador);
-        ((colorJugador==ColorJugador.BLANCO)?Blancas:Negras).add(p);   
+        ((colorJugador==ColorJugador.BLANCO)?Blancas:Negras).add(p);
     }
     private void aplicarJugada(Point p, ColorJugador colorJugador, Iterator<Point> iterator) {
         aplicarJugada(p, colorJugador);
