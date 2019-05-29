@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="ProyectoHex/src"/>
+	<classpathentry kind="src" path="tallerfinal/src"/>
+	<classpathentry kind="output" path="tallerfinal/build/classes"/>
+</classpath>
