@@ -10,10 +10,6 @@ import co.edu.javeriana.algoritmos.proyecto.Jugada;
 import co.edu.javeriana.algoritmos.proyecto.JugadorHex;
 import co.edu.javeriana.algoritmos.proyecto.Tablero;
 import java.util.concurrent.TimeUnit;
-import main.java.Jugador;
-import main.java.JugadorManual;
-import main.java.TableroHex;
-
 /**
  *
  * @author USUARIO
