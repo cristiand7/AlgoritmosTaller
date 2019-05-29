@@ -9,6 +9,10 @@ import co.edu.javeriana.algoritmos.proyecto.ColorJugador;
 import co.edu.javeriana.algoritmos.proyecto.Jugada;
 import co.edu.javeriana.algoritmos.proyecto.JugadorHex;
 import co.edu.javeriana.algoritmos.proyecto.Tablero;
+import java.util.concurrent.TimeUnit;
+import main.java.Jugador;
+import main.java.JugadorManual;
+import main.java.TableroHex;
 
 /**
  *
@@ -16,7 +20,7 @@ import co.edu.javeriana.algoritmos.proyecto.Tablero;
  */
 public class Robot {
 
-    public static void main(String args[]) {        
+    public static void main(String args[]) throws InterruptedException {        
         
         System.out.println("Test hex");
         boolean turno = true;
@@ -41,10 +45,11 @@ public class Robot {
                 tablero.imprimirTablero();
             } else {
                 System.out.println(" Negro");
+                TimeUnit.SECONDS.sleep(1);
                 Jugada j=jugador2.jugar(tablero, ColorJugador.NEGRO);
                 tablero.aplicarJugada(j, ColorJugador.NEGRO);
             }
-            turno = !turno;            
+            turno = !turno;
             
         }
     }
