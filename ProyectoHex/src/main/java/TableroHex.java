@@ -132,7 +132,7 @@ public class TableroHex implements Tablero {
             Point p = iterator.next();
             if(t.casilla(p.x,p.y)!=null)
             {
-                if(interno)System.out.println(" >Enemigo jugo en "+ p.toString() + " turno: " +(turno));
+                if(interno)System.out.println(" >Enemigo jugo en [x="+ p.x+ ",y="+p.y+"] turno: " +(turno));
                 aplicarJugada(p, t.casilla(p.x,p.y),iterator);
                 turno++;
                 break;

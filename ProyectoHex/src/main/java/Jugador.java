@@ -55,6 +55,9 @@ public class Jugador implements JugadorHex {
             e.printStackTrace();
         } finally {
             service.shutdown();
+            
+            System.out.println(" >Yo juego en [x="+ mejorJugada.getFila()+ ",y="+mejorJugada.getColumna()+"] "+(mejorJugada.isCambioColores()?"cambiando el color":""));
+            t.aplicarJugada(mejorJugada, color);
             t.imprimirTablero();
             return mejorJugada;
         }
@@ -90,9 +93,6 @@ public class Jugador implements JugadorHex {
             = (t.turno==1)? FirstMove()
             : (t.turno==2)? SecondMove()
             : BestMove();
-
-        System.out.println(" >Yo juego en [x="+ mejorJugada.getFila()+ ",y="+mejorJugada.getColumna()+"] "+(mejorJugada.isCambioColores()?"cambiando el color":""));
-        t.aplicarJugada(mejorJugada, color);
         return mejorJugada;
     }
     
@@ -114,9 +114,9 @@ public class Jugador implements JugadorHex {
         //Buscar en la lista de movimientos otro jugador, solo deberia haber uno
         for(Point p : (colorJugador==ColorJugador.BLANCO? t.Negras: t.Blancas)){
             if ((p.x+p.y<=2)||(p.x+p.y>=2*t.Size-4))
-                return new Jugada(true, p.x, p.y);
-            else
                 return BestMove();
+            else
+                return new Jugada(true, p.x, p.y);
 	}
         return null;
     }
