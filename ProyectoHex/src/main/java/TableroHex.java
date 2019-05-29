@@ -19,6 +19,7 @@ import java.util.Iterator;
  */
 public class TableroHex implements Tablero {
     ColorJugador tablero[][];
+    public boolean interno;
     
     public int Pot[][][];
     public int Bridge[][][];
@@ -31,6 +32,10 @@ public class TableroHex implements Tablero {
     public int Size = 11;
     int turno;
     
+    public TableroHex(boolean i) {
+        this();
+        interno = i;
+    }
     public TableroHex() {
         tablero = new ColorJugador[Size][Size];
         Pot = new int[Size][Size][4];
@@ -64,12 +69,10 @@ public class TableroHex implements Tablero {
     public void aplicarJugada(Jugada jugada, ColorJugador colorJugador) {
         int columna = jugada.getColumna();
         int fila = jugada.getFila();
-        
         aplicarJugada(new Point(fila, columna), colorJugador);
         Libres.remove(new Point(fila,columna));
         
         turno++;
-        imprimirTablero();
     }
     
     public ColorJugador casilla(Point p) {
@@ -126,9 +129,9 @@ public class TableroHex implements Tablero {
     public void Actualizar(Tablero t){
         for (Iterator<Point> iterator = Libres.iterator(); iterator.hasNext(); ) {
             Point p = iterator.next();
-            
             if(t.casilla(p.x,p.y)!=null)
             {
+                if(interno)System.out.println(" >Enemigo jugo en "+ p.toString() + " turno: " +(turno));
                 aplicarJugada(p, t.casilla(p.x,p.y),iterator);
                 turno++;
                 break;
@@ -139,6 +142,7 @@ public class TableroHex implements Tablero {
     private void aplicarJugada(Point p, ColorJugador colorJugador) {
         setCasilla(p, colorJugador);
         ((colorJugador==ColorJugador.BLANCO)?Blancas:Negras).add(p);
+        if(interno)System.out.println(" > Aplicar Jugada"+p);
     }
     private void aplicarJugada(Point p, ColorJugador colorJugador, Iterator<Point> iterator) {
         aplicarJugada(p, colorJugador);
@@ -160,7 +164,7 @@ public class TableroHex implements Tablero {
     public void imprimirTablero() {
         int n = 11;
         
-        System.out.println("  | _______________________");
+        System.out.println("  | ____________________: "+(turno-1));
         System.out.println("  | A B C D E F G H I J K    ");
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < i; j++) {

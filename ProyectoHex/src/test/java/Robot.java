@@ -20,31 +20,30 @@ import main.java.TableroHex;
 public class Robot {
 
     public static void main(String args[]) {        
-        JugadorHex jugador = new Jugador();
-        System.out.println(jugador.jugar(null, null));
         
         System.out.println("Test hex");
-        boolean turno = false;
+        boolean turno = true;
         int aleatorio = (int) (Math.random() * 100) + 1;
         if (aleatorio % 2 == 0) {
-            turno = true;
+//            turno = true;
         }
 
-        JugadorHex jugador1 = new JugadorManual();
-        JugadorHex jugador2 = new JugadorManual();//jugador a programar *****
+        TableroHex tablero = new TableroHex();
 
-        Tablero tablero = new TableroHex();
+        JugadorHex jugador1 = new JugadorManual();//jugador a programar *****
+        JugadorHex jugador2 = new Jugador();
+
         while (true) {
             System.out.print("turno del jugador ");
             if (turno) {
                 System.out.println(" Blanco");
-            } else {
-                System.out.println(" Negro");
-            }
-            if (turno) {
                 Jugada j=jugador1.jugar(tablero, ColorJugador.BLANCO);
                 tablero.aplicarJugada(j, ColorJugador.BLANCO);
+                
+                System.out.println(" ");
+                tablero.imprimirTablero();
             } else {
+                System.out.println(" Negro");
                 Jugada j=jugador2.jugar(tablero, ColorJugador.NEGRO);
                 tablero.aplicarJugada(j, ColorJugador.NEGRO);
             }

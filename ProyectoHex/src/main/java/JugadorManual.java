@@ -23,8 +23,11 @@ public class JugadorManual implements JugadorHex {
          System.out.println("tu respuesta (ejm 0,0) :");
 
         String[] respuesta = leer.nextLine().split(",");
-       
-        return new Jugada(Integer.parseInt(respuesta[0]), Integer.parseInt(respuesta[1]));
+       try{
+        return new Jugada(Integer.parseInt(respuesta[0]), Integer.parseInt(respuesta[1]));           
+       }catch(NumberFormatException e){
+        return new Jugada(0, 0);           
+       }
     }
 
     @Override
