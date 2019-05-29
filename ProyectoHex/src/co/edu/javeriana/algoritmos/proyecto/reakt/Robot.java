@@ -51,6 +51,7 @@ public class Robot {
             }
             turno = !turno;
             
+            System.out.println("FIN DE LA RONDA");
         }
     }
 
