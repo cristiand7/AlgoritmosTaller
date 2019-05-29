@@ -129,7 +129,8 @@ public class Jugador implements JugadorHex{
 					}
 					if ((i>0)&&(i<11-4)&&(j<11-1)&&(j>11-4)) 
 					{ if (tablero.casilla(i+1, j-2)!=null&&tablero.casilla(i+1, j-2)!=miColor)
-					{ conexion=sepuedeconectarfuncion;
+					{ 
+						conexion=sepuedeconectarfuncion;
 					if (conexion <2)
 					{ auxiliar=i; 
 					if (conexion<-1) {
@@ -159,7 +160,8 @@ public class Jugador implements JugadorHex{
 					if ((j>3)&&(j<11-1)&&(i>0)&&(i<3)) 
 
 					{ if (tablero.casilla(i+2, j-1)!=null&&tablero.casilla(i+2, j-1)!=miColor)
-					{ conexion=funcion se puede;
+					{ 
+						//conexion=funcion se puede;
 					if (conexion<2) 
 					{ auxiliar2=j; 
 					if (conexion<-1) { 
@@ -181,7 +183,8 @@ public class Jugador implements JugadorHex{
 					if ((j>0)&&(j<11-4)&&(i<11-1)&&(i>11-4)) 
 
 					{ if (tablero.casilla(i-2, j+1)!=null&&tablero.casilla(i-2, j+1)!=miColor)
-					{ conexion=funcionsi es pisble;
+					{ 
+						//conexion=funcionsi es pisble;
 					if (conexion<2) 
 					{ auxiliar2=j; 
 					if (conexion<-1) { 
@@ -189,7 +192,7 @@ public class Jugador implements JugadorHex{
 						conexion++; 
 					}
 					auxiliar=i+conexion; 
-					// mm=vv[ii*Size+jj]; 
+					mm=vv[i*11+j]; 
 					}
 					}  
 					}
