@@ -1,10 +1,13 @@
+package co.edu.javeriana.algoritmos.proyecto.reakt;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main.java;
 
+
+import co.edu.javeriana.algoritmos.proyecto.reakt.TableroHex;
 import co.edu.javeriana.algoritmos.proyecto.ColorJugador;
 import co.edu.javeriana.algoritmos.proyecto.Jugada;
 import co.edu.javeriana.algoritmos.proyecto.JugadorHex;
@@ -51,8 +54,6 @@ public class Jugador implements JugadorHex {
             });
             mejorJugada = f.get(MAX_CALCULATION_TIME, MAX_CALCULATION_UNITS);
         } catch (final InterruptedException | ExecutionException | TimeoutException e) {
-            System.err.println("ERROR: "+e.getLocalizedMessage());
-            e.printStackTrace();
         } finally {
             service.shutdown();
             t.imprimirTablero();

@@ -1,9 +1,11 @@
+package co.edu.javeriana.algoritmos.proyecto.reakt;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main.java;
+
 
 import co.edu.javeriana.algoritmos.proyecto.ColorJugador;
 import co.edu.javeriana.algoritmos.proyecto.Jugada;
@@ -12,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.Point;
 import java.util.Iterator;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -143,8 +144,7 @@ public class TableroHex implements Tablero {
     private void aplicarJugada(Point p, ColorJugador colorJugador) {
         setCasilla(p, colorJugador);
         ((colorJugador==ColorJugador.BLANCO)?Blancas:Negras).add(p);
-        ((colorJugador!=ColorJugador.BLANCO)?Blancas:Negras).remove(p);
-        if(interno)System.out.println(" > Aplicar Jugada ["+p.getX()+","+p.getY()+"]");
+        if(interno)System.out.println(" > Aplicar Jugada"+p);
     }
     private void aplicarJugada(Point p, ColorJugador colorJugador, Iterator<Point> iterator) {
         aplicarJugada(p, colorJugador);
@@ -190,11 +190,6 @@ public class TableroHex implements Tablero {
             System.out.print("\n");
         }
         System.out.println("========================================");
-        String resultL = Libres.stream().map(p->"("+p.x+","+p.y+")").collect(Collectors.joining(","));
-        System.out.println("Libres: "+resultL);
-        String resultB = Blancas.stream().map(p->"("+p.x+","+p.y+")").collect(Collectors.joining(","));
-        System.out.println("Blancas: "+resultB);
-        String resultN = Negras.stream().map(p->"("+p.x+","+p.y+")").collect(Collectors.joining(","));
-        System.out.println("Negras: "+resultN);
+
     }
 }
