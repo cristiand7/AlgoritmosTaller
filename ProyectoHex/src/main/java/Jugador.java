@@ -51,6 +51,8 @@ public class Jugador implements JugadorHex {
             });
             mejorJugada = f.get(MAX_CALCULATION_TIME, MAX_CALCULATION_UNITS);
         } catch (final InterruptedException | ExecutionException | TimeoutException e) {
+            System.err.println("ERROR: "+e.getLocalizedMessage());
+            e.printStackTrace();
         } finally {
             service.shutdown();
             t.imprimirTablero();
