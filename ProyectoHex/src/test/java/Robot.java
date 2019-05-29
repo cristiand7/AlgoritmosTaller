@@ -31,7 +31,7 @@ public class Robot {
         }
 
         JugadorHex jugador1 = new JugadorManual();
-        JugadorHex jugador2 = new JugadorManual();//jugador a programar *****
+        JugadorHex jugador2 = new Jugador();//jugador a programar *****
 
         Tablero tablero = new TableroHex();
         while (true) {

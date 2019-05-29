@@ -108,7 +108,7 @@ public class Jugador implements JugadorHex{
 					if(i>3&&i<(11-1)&&j>0&&j<3) {
 
 						if(tablero.casilla(i-1, j+2)!=null&&tablero.casilla(i-1, j+2)!=miColor) {
-							//conexion=llamar funcuion validacion;
+							conexion=CanConnectFarBorder(i-1,j+2,0,tablero,miColor);
 							if(conexion<2) {
 								auxiliar=i;
 								if(conexion<-1) {
@@ -130,7 +130,7 @@ public class Jugador implements JugadorHex{
 					if ((i>0)&&(i<11-4)&&(j<11-1)&&(j>11-4)) 
 					{ if (tablero.casilla(i+1, j-2)!=null&&tablero.casilla(i+1, j-2)!=miColor)
 					{ 
-						conexion=sepuedeconectarfuncion;
+						conexion=CanConnectFarBorder(i-1,j-2,0,tablero,miColor);
 					if (conexion <2)
 					{ auxiliar=i; 
 					if (conexion<-1) {
@@ -161,7 +161,7 @@ public class Jugador implements JugadorHex{
 
 					{ if (tablero.casilla(i+2, j-1)!=null&&tablero.casilla(i+2, j-1)!=miColor)
 					{ 
-						//conexion=funcion se puede;
+                                            conexion=CanConnectFarBorder(i+2,j-1,0,tablero,miColor);
 					if (conexion<2) 
 					{ auxiliar2=j; 
 					if (conexion<-1) { 
@@ -184,8 +184,8 @@ public class Jugador implements JugadorHex{
 
 					{ if (tablero.casilla(i-2, j+1)!=null&&tablero.casilla(i-2, j+1)!=miColor)
 					{ 
-						//conexion=funcionsi es pisble;
-					if (conexion<2) 
+					            conexion=CanConnectFarBorder(i-2,j+1,0,tablero,miColor);
+                                        if (conexion<2) 
 					{ auxiliar2=j; 
 					if (conexion<-1) { 
 						auxiliar2++;
@@ -215,11 +215,72 @@ public class Jugador implements JugadorHex{
 
 			}
 		}
-		return jugada;
+		return new Jugada(auxiliar, auxiliar2);
 	}
 
 
-
+ public int CanConnectFarBorder(int nn,int mm,int cc,Tablero tablero,ColorJugador micolor)
+{ int ii, jj;
+    int Size=11;
+  if (cc>0) //blue
+  { if (2*mm<Size-1)
+    { for (ii=0; ii<Size; ii++)
+      { for (jj=0; jj<mm; jj++)
+        { if ((jj-ii<mm-nn)&&(ii+jj<=nn+mm)&&(tablero.casilla(ii, jj)!=micolor)) return 2;
+        }
+      }
+      if (tablero.casilla(nn-1, mm)!=micolor) return 0;
+      if (tablero.casilla(nn-1, mm-1)!=micolor)
+      { 
+          if (tablero.casilla(nn+2,mm-1)!=micolor) return 0;
+        return -1;
+      }
+      if (tablero.casilla(nn+2,mm-1)!=micolor) return(-2);
+    }
+    else
+    { for (ii=0; ii<Size; ii++)
+      { for (jj=Size-1; jj>mm; jj--)
+        { if ((jj-ii>mm-nn)&&(ii+jj>=nn+mm)&&(tablero.casilla(ii,jj)!=null)) return(2);
+        }
+      }
+      if (tablero.casilla(nn+1,mm)!=micolor) return(0);
+      if (tablero.casilla(nn+1,mm+1)!=micolor)
+      { if (tablero.casilla(nn-2,mm+1)!=micolor) return(0);
+        return(-1);
+      }
+      if (tablero.casilla(nn-2,mm+1)!=micolor) return(-2); 
+    }  
+  }
+  else
+  { if (2*nn<Size-1)
+    { for (jj=0; jj<Size; jj++)
+      { for (ii=0; ii<nn; ii++)
+        { if ((ii-jj<nn-mm)&&(ii+jj<=nn+mm)&&(tablero.casilla(ii,jj)!=null)) return(2);
+        }
+      }
+      if (tablero.casilla(nn,mm-1)!=micolor) return(0);
+      if (tablero.casilla(nn-1,mm-1)!=micolor)
+      { if (tablero.casilla(nn-1,mm+2)!=micolor) return(0);
+        return(-1);
+      }
+      if (tablero.casilla(nn-1,mm+2)!=micolor) return(-2);
+    }
+    else
+    { for (jj=0; jj<Size; jj++)
+      { for (ii=Size-1; ii>nn; ii--)
+        { if ((ii-jj>nn-mm)&&(ii+jj>=nn+mm)&&(tablero.casilla(ii,jj)!=null)) return(2);
+        }
+      }
+      if (tablero.casilla(nn,mm+1)!=micolor) return(0);
+      if (tablero.casilla(nn+1,mm+1)!=micolor)
+      { if (tablero.casilla(nn+1,mm-2)!=micolor) return(0);
+        return(-1);
+      }
+      if (tablero.casilla(nn+1,mm-2)!=micolor   ) return(-2);  
+    }  
+  }  
+  return(1);
+}
 
 
 
