@@ -41,10 +41,7 @@ public class Robot {
                 Jugada j=jugador1.jugar(tablero, color1);
                 
                 tablero.aplicarJugada(j, color1);
-                
-                if(suerte){
-                    tablero.imprimirTablero();
-                }
+                tablero.imprimirTablero();
             } else {
                 System.out.println(color2);
                 Jugada j=jugador2.jugar(tablero, color2);
@@ -57,10 +54,7 @@ public class Robot {
                 else{
                     tablero.aplicarJugada(j, color2);
                 }
-                
-                if(!suerte){
-                    tablero.imprimirTablero();
-                }
+                tablero.imprimirTablero();
             }
             turno = !turno;
             if(turno)

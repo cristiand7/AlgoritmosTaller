@@ -62,7 +62,7 @@ public class Jugador implements JugadorHex {
             
             log(" >Yo juego en [x="+ mejorJugada.getFila()+ ",y="+mejorJugada.getColumna()+"] "+(mejorJugada.isCambioColores()?"cambiando el color":""));
             t.aplicarJugada(mejorJugada, color);
-            t.imprimirTablero();
+            if(LOG)t.imprimirTablero();
             return mejorJugada;
         }
     }
