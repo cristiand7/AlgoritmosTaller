@@ -16,32 +16,55 @@ import java.util.concurrent.TimeUnit;
 public class Robot {
 
     public static void main(String args[]) throws InterruptedException {        
-        
         System.out.println("Test hex");
-        boolean turno = false;
+        boolean turno = true,suerte=true;//deberia ser un random
 
         TableroHex tablero = new TableroHex();
+        
+        JugadorHex jugador1;
+        JugadorHex jugador2;
+        if(suerte){
+            jugador1 = new JugadorManual();
+            jugador2 = new Jugador();
+        }
+        else{
+            jugador1 = new Jugador();
+            jugador2 = new JugadorManual();
+        }
 
-        JugadorHex jugador1 = new JugadorManual();
-        JugadorHex jugador2 = new Jugador();
-
+        ColorJugador color1 = ColorJugador.BLANCO;
+        ColorJugador color2 = ColorJugador.NEGRO;
         while (true) {
             System.out.print("turno del jugador ");
             if (turno) {
-                System.out.println(" Blanco");
-                Jugada j=jugador1.jugar(tablero, ColorJugador.BLANCO);
-                tablero.aplicarJugada(j, ColorJugador.BLANCO);
+                System.out.println(color1);
+                Jugada j=jugador1.jugar(tablero, color1);
                 
-                System.out.println(" ");
-                tablero.imprimirTablero();
+                tablero.aplicarJugada(j, color1);
+                
+                if(suerte){
+                    tablero.imprimirTablero();
+                }
             } else {
-                System.out.println(" Negro");
-                Jugada j=jugador2.jugar(tablero, ColorJugador.NEGRO);
-                tablero.aplicarJugada(j, ColorJugador.NEGRO);
+                System.out.println(color2);
+                Jugada j=jugador2.jugar(tablero, color2);
+                
+                if(j.isCambioColores()){
+                    ColorJugador temp=color2;
+                    color2=color1;
+                    color1=temp;
+                }
+                else{
+                    tablero.aplicarJugada(j, color2);
+                }
+                
+                if(!suerte){
+                    tablero.imprimirTablero();
+                }
             }
             turno = !turno;
-            
-            System.out.println("FIN DE LA RONDA");
+            if(turno)
+                System.out.println("FIN DE LA RONDA");
         }
     }
 

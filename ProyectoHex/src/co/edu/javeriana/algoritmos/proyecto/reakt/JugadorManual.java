@@ -22,11 +22,13 @@ public class JugadorManual implements JugadorHex {
     @Override
     public Jugada jugar(Tablero tablero, ColorJugador color) {
         Scanner leer = new Scanner(System.in);
-         System.out.println("tu respuesta (ejm 0,0) :");
+         System.out.println("tu respuesta (ejm 0,0) (c=cambio, solo en el segundo turno):");
 
         String[] respuesta = leer.nextLine().split(",");
        try{
-        return new Jugada(Integer.parseInt(respuesta[0]), Integer.parseInt(respuesta[1]));           
+           if(respuesta[0].equals("c"))
+            return new Jugada(true,0,0);           
+            return new Jugada(Integer.parseInt(respuesta[0]), Integer.parseInt(respuesta[1]));           
        }catch(NumberFormatException e){
         return new Jugada(0, 0);           
        }

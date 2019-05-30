@@ -6,14 +6,10 @@ package co.edu.javeriana.algoritmos.proyecto.reakt;
  * and open the template in the editor.
  */
 
-
-import co.edu.javeriana.algoritmos.proyecto.reakt.TableroHex;
 import co.edu.javeriana.algoritmos.proyecto.ColorJugador;
 import co.edu.javeriana.algoritmos.proyecto.Jugada;
 import co.edu.javeriana.algoritmos.proyecto.JugadorHex;
 import co.edu.javeriana.algoritmos.proyecto.Tablero;
-import java.awt.Point;
-import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -73,6 +69,6 @@ public class Jugador implements JugadorHex {
     
      @Override
     public String nombreJugador() {
-        return "Reakt";
+        return "Reakt EZ";
     }
 }

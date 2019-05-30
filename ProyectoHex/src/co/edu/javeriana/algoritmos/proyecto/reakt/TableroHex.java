@@ -65,7 +65,7 @@ public class TableroHex implements Tablero {
     }
     @Override
     public ColorJugador ganador() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return jugador!=null?jugador.colorJugador:ColorJugador.NEGRO;
     }
 
     @Override
@@ -75,10 +75,13 @@ public class TableroHex implements Tablero {
     
     @Override
     public void aplicarJugada(Jugada jugada, ColorJugador colorJugador) {
-        int columna = jugada.getColumna();
-        int fila = jugada.getFila();
-        aplicarJugada(new Point(fila, columna), colorJugador);
-        Libres.remove(new Point(fila,columna));
+        if(!jugada.isCambioColores())
+        {
+            int x = jugada.getFila();
+            int y = jugada.getColumna();
+            aplicarJugada(new Point(x, y), colorJugador);
+            Libres.remove(new Point(x,y));
+        }
         
         turno++;
     }
