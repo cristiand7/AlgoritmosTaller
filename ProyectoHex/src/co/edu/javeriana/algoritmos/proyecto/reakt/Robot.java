@@ -8,7 +8,6 @@ package co.edu.javeriana.algoritmos.proyecto.reakt;
 import co.edu.javeriana.algoritmos.proyecto.ColorJugador;
 import co.edu.javeriana.algoritmos.proyecto.Jugada;
 import co.edu.javeriana.algoritmos.proyecto.JugadorHex;
-import co.edu.javeriana.algoritmos.proyecto.Tablero;
 import java.util.concurrent.TimeUnit;
 /**
  *
@@ -19,11 +18,7 @@ public class Robot {
     public static void main(String args[]) throws InterruptedException {        
         
         System.out.println("Test hex");
-        boolean turno = true;
-        int aleatorio = (int) (Math.random() * 100) + 1;
-        if (aleatorio % 2 == 0) {
-//            turno = true;
-        }
+        boolean turno = false;
 
         TableroHex tablero = new TableroHex();
 
