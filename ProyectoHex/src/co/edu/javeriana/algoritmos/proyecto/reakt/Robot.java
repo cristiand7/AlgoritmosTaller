@@ -22,7 +22,7 @@ public class Robot {
 
         TableroHex tablero = new TableroHex();
 
-        JugadorHex jugador1 = new JugadorManual();//jugador a programar *****
+        JugadorHex jugador1 = new JugadorManual();
         JugadorHex jugador2 = new Jugador();
 
         while (true) {
@@ -36,7 +36,6 @@ public class Robot {
                 tablero.imprimirTablero();
             } else {
                 System.out.println(" Negro");
-                TimeUnit.SECONDS.sleep(1);
                 Jugada j=jugador2.jugar(tablero, ColorJugador.NEGRO);
                 tablero.aplicarJugada(j, ColorJugador.NEGRO);
             }

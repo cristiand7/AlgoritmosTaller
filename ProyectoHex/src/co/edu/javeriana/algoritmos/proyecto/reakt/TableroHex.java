@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.Point;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -22,12 +23,13 @@ import java.util.stream.Collectors;
  */
 public class TableroHex implements Tablero {
     ColorJugador tablero[][];
-    public boolean interno;
-    
+    public boolean log;
+    public Jugador jugador;
     public int Pot[][][];
     public int Bridge[][][];
     public boolean Upd[][];
     
+    List<Point> Celdas;
     List<Point> Libres;
     List<Point> Blancas;
     List<Point> Negras;
@@ -35,9 +37,10 @@ public class TableroHex implements Tablero {
     public int Size = 11;
     int turno;
     
-    public TableroHex(boolean i) {
+    public TableroHex(Jugador j,boolean l) {
         this();
-        interno = i;
+        jugador = j;
+        log = l;
     }
     public TableroHex() {
         tablero = new ColorJugador[Size][Size];
@@ -45,6 +48,7 @@ public class TableroHex implements Tablero {
         Bridge = new int[Size][Size][4];
         Upd = new boolean[Size][Size];
         
+        Celdas = new ArrayList<>();
         Libres = new ArrayList<>();
         Blancas = new ArrayList<>();
         Negras = new ArrayList<>();
@@ -54,6 +58,7 @@ public class TableroHex implements Tablero {
         for (int i = 0; i < Size; i++) {
             for (int j = 0; j < Size; j++) {
                 Libres.add(new Point(i,j));
+                Celdas.add(new Point(i,j));
             }
         }
         
@@ -77,11 +82,67 @@ public class TableroHex implements Tablero {
         
         turno++;
     }
+
+    private void aplicarJugada(Point p, ColorJugador colorJugador) {
+        tablero[p.x][p.y]=colorJugador;
+        ((colorJugador==ColorJugador.BLANCO)?Blancas:Negras).add(p);
+        ((colorJugador!=ColorJugador.BLANCO)?Blancas:Negras).remove(p);
+        if(log)System.out.println(" > Aplicar Jugada ["+p.getX()+","+p.getY()+"]");
+    }
+    
+    private void aplicarJugada(Point p, ColorJugador colorJugador, Iterator<Point> iterator) {
+        aplicarJugada(p, colorJugador);
+        iterator.remove();
+    }    
+    
+    public List<Point> getLibres() {
+        return Libres;
+    }
+
+    public List<Point> getBlancas() {
+        return Blancas;
+    }
+
+    public List<Point> getNegras() {
+        return Negras;
+    }
+        
+    public Jugada encontrarMejorJugada(Tablero t) {
+        //Actualizar lista de casillas libres
+        Actualizar(t);
+        //Escoger la unica casilla libre por si acaso
+        jugador.mejorJugada = newJugada(Libres.get(0));
+        jugador.mejorJugada
+            = (turno==1)? FirstMove()
+            : (turno==2)? SecondMove(jugador.colorJugador)
+            : GetBestMove(jugador.colorJugador);
+        return jugador.mejorJugada;
+    }  
+    
+    public void Actualizar(Tablero t){
+        for (Iterator<Point> iterator = Libres.iterator(); iterator.hasNext(); ) {
+            Point p = iterator.next();
+            if(t.casilla(p.x,p.y)!=null)
+            {
+                if(log)System.out.println(" >Enemigo jugo en [x="+ p.x+ ",y="+p.y+"] turno: " +(turno));
+                aplicarJugada(p, t.casilla(p.x,p.y),iterator);
+                turno++;
+                break;
+            }
+        }
+    }
     
     public ColorJugador casilla(Point p) {
         return tablero[p.x][p.y];
     }
     
+    public Jugada newJugada(Point p){
+        return new Jugada(p.x, p.y);
+    }
+    private int random(int n){
+        Random r = new Random();
+        return r.nextInt(n);
+    }
     private boolean isOpuesto (ColorJugador c1, ColorJugador c2){
         return c1!=c2 &&  c1!=null && c2!=null;
     }
@@ -90,8 +151,7 @@ public class TableroHex implements Tablero {
             return c==ColorJugador.BLANCO?ColorJugador.NEGRO:ColorJugador.BLANCO;
         return null;
     }
-    private int sign(int n)
-    {
+    private int sign(int n){
         if (n<0) return(-1);
         if (n>0) return(1);
         return 0;
@@ -99,16 +159,12 @@ public class TableroHex implements Tablero {
     private boolean OutOfBounds(int x, int y){
 	return x<0 || y<0 || x>=Size || y>=Size;
     }
-    
-    public void SetUpd(int x,int y)
-    {
+    public void SetUpd(int x,int y){
         if (OutOfBounds(x,y))
             return;
         Upd[x][y]=true;
     }
-    
-    public ColorJugador GetCell(int x,int y)
-    {
+    public ColorJugador GetCell(int x,int y){
         if (x<0)     return ColorJugador.NEGRO;
         if (y<0)     return ColorJugador.BLANCO;
         if (x>=Size) return ColorJugador.NEGRO;
@@ -116,9 +172,31 @@ public class TableroHex implements Tablero {
         return tablero[x][y];
     }
     
-    public void setCasilla(Point p, ColorJugador color) {
-        tablero[p.x][p.y] = color;
+    public Jugada FirstMove(){
+        //Escoger una de las esquinas
+        int x = random(4);
+        int y = random(4-x);
+        
+        // 50-50 de escojer la otra
+        if (random(2)<1)
+        {
+            x=Size-1-x;
+            y=Size-1-y;
+        }
+        return new Jugada(x,y);
     }
+    
+    public Jugada SecondMove(ColorJugador colorJugador){
+        //Buscar en la lista de movimientos otro jugador, solo deberia haber uno
+        for(Point p : (colorJugador==ColorJugador.BLANCO? Negras: Blancas)){
+            if ((p.x+p.y<=2)||(p.x+p.y>=2*Size-4))
+                return GetBestMove(colorJugador);
+            else
+                return new Jugada(true, p.x, p.y);
+	}
+        return new Jugada(Libres.get(0).x,Libres.get(0).y);
+    }  
+    
     
     public void CalculatePotential(ColorJugador cJugador){
 	int borderPotential=128;
@@ -619,49 +697,6 @@ public class TableroHex implements Tablero {
         return 1;
     }
 
-    public List<Point> getLibres() {
-        return Libres;
-    }
-
-    public List<Point> getBlancas() {
-        return Blancas;
-    }
-
-    public List<Point> getNegras() {
-        return Negras;
-    }
-    
-    public void Actualizar(Tablero t){
-        for (Iterator<Point> iterator = Libres.iterator(); iterator.hasNext(); ) {
-            Point p = iterator.next();
-            if(t.casilla(p.x,p.y)!=null)
-            {
-                if(interno)System.out.println(" >Enemigo jugo en [x="+ p.x+ ",y="+p.y+"] turno: " +(turno));
-                aplicarJugada(p, t.casilla(p.x,p.y),iterator);
-                turno++;
-                break;
-            }
-        }
-    }
-    
-    private void aplicarJugada(Point p, ColorJugador colorJugador) {
-        setCasilla(p, colorJugador);
-        ((colorJugador==ColorJugador.BLANCO)?Blancas:Negras).add(p);
-        ((colorJugador!=ColorJugador.BLANCO)?Blancas:Negras).remove(p);
-        if(interno)System.out.println(" > Aplicar Jugada ["+p.getX()+","+p.getY()+"]");
-    }
-    
-    private void aplicarJugada(Point p, ColorJugador colorJugador, Iterator<Point> iterator) {
-        aplicarJugada(p, colorJugador);
-        iterator.remove();
-    }    
-    
-    public void tiempo(){
-        double s=System.nanoTime();
-        double e=System.nanoTime();
-        System.out.println("T: "+(e-s)/1000000);
-    }
-    
     /**
      * imprimesion del tablero para ver movimientos
      * Negro es O

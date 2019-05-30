@@ -29,37 +29,42 @@ public class Jugador implements JugadorHex {
 
     public final long MAX_CALCULATION_TIME = 1000 * 2 - 1;
     public final TimeUnit MAX_CALCULATION_UNITS = TimeUnit.MILLISECONDS;
+    public final boolean LOG=false;
 
-    private Jugada mejorJugada;
-    private final TableroHex t;
-    private ColorJugador colorJugador;
+    public Jugada mejorJugada;
+    public TableroHex t;
+    public ColorJugador colorJugador;
 
      public Jugador(){
         mejorJugada = null;
-        t = new TableroHex(true);
+        t = new TableroHex(this,LOG);
     }
-
-    public Jugada newJugada(Point p){
-        return new Jugada(p.x, p.y);
+     
+    public void log(String s){
+        if(LOG)System.out.println(s);
+    }
+    public void logError(String s){
+        if(LOG)System.err.println(s);
     }
     
-     @Override
+    @Override
     public Jugada jugar(Tablero tablero, ColorJugador color) {
-        System.out.println(" >Soy "+color);
+        colorJugador=color;
         final ExecutorService service = Executors.newSingleThreadExecutor();
         try {
             final Future<Jugada> f = service.submit(() -> {
-                encontrarMejorJugada(tablero,color);
+                log(" >Soy "+colorJugador);
+                t.encontrarMejorJugada(tablero);
                 return mejorJugada;
             });
             mejorJugada = f.get(MAX_CALCULATION_TIME, MAX_CALCULATION_UNITS);
         } catch (final InterruptedException | ExecutionException | TimeoutException e) {
-            System.err.println("ERROR: "+e.getLocalizedMessage());
+            logError("ERROR: "+e.getLocalizedMessage());
             e.printStackTrace();
         } finally {
             service.shutdown();
             
-            System.out.println(" >Yo juego en [x="+ mejorJugada.getFila()+ ",y="+mejorJugada.getColumna()+"] "+(mejorJugada.isCambioColores()?"cambiando el color":""));
+            log(" >Yo juego en [x="+ mejorJugada.getFila()+ ",y="+mejorJugada.getColumna()+"] "+(mejorJugada.isCambioColores()?"cambiando el color":""));
             t.aplicarJugada(mejorJugada, color);
             t.imprimirTablero();
             return mejorJugada;
@@ -70,52 +75,4 @@ public class Jugador implements JugadorHex {
     public String nombreJugador() {
         return "Reakt";
     }
-    
-
-    
-    private int random(int n)
-    {
-        Random r = new Random();
-        return r.nextInt(n);
-    }
-
-    public Jugada encontrarMejorJugada(Tablero tablero, ColorJugador color) throws InterruptedException {
-        colorJugador = color;
-        
-        //Actualizar lista de casillas libres
-        t.Actualizar(tablero);
-
-        //Escoger la unica casilla libre por si acaso
-        mejorJugada = newJugada(t.Libres.get(0));
-        mejorJugada
-            = (t.turno==1)? FirstMove()
-            : (t.turno==2)? SecondMove()
-            : t.GetBestMove(colorJugador);
-        return mejorJugada;
-    }
-    
-     public Jugada FirstMove(){
-        //Escoger una de las esquinas
-        int x = random(4);
-        int y = random(4-x);
-        
-        // 50-50 de escojer la otra
-        if (random(2)<1)
-        {
-            x=t.Size-1-x;
-            y=t.Size-1-y;
-        }
-        return new Jugada(x,y);
-    }
-    
-    public Jugada SecondMove(){
-        //Buscar en la lista de movimientos otro jugador, solo deberia haber uno
-        for(Point p : (colorJugador==ColorJugador.BLANCO? t.Negras: t.Blancas)){
-            if ((p.x+p.y<=2)||(p.x+p.y>=2*t.Size-4))
-                return t.GetBestMove(colorJugador);
-            else
-                return new Jugada(true, p.x, p.y);
-	}
-        return null;
-    }    
 }
